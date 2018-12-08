@@ -2,7 +2,7 @@
 
 ![Cassandra](images/Cassandra.png)
 
-Cassanda is a [NoSQL](http://en.wikipedia.org/wiki/NoSQL) database that originated at Facebook.
+Cassandra is a [NoSQL](http://en.wikipedia.org/wiki/NoSQL) database that originated at Facebook.
 
 Cassandra is optimized for fast writes and fast reads over very large volumes of data.
 
@@ -15,9 +15,14 @@ as a ___write-behind cache___) - and only writes the cache to disk once the cach
 ```
 
 The Cassandra terms for these are the __commit log__, __Memtables__ and __SS Tables__ [which
-stands for ___Sorted String Tables___ (these are immutable).] The database write is successful
-and returns once the data is written to the __Memtable__. How this data gets written to disk
-and propogated then depends on the ___replication policy___ (we will use simple replication).
+stands for ___Sorted String Tables___; these are sorted in row order and are immutable].
+The database write is successful and returns once the data is written to the __Memtable__.
+How this data gets written to disk and propagated then depends on the ___replication policy___
+(we will use simple replication).
+
+As __SS Tables__ are immutable, deletes are handled via a logical delete indicator, which
+is referred to as a ___Tombstone___ in Cassandra. Compaction is used to remove logically
+deleted records.
 
 By design, there is no single point of failure.
 
@@ -27,11 +32,33 @@ will __eventually__ be synchronized and become consistent (hence the term).
 
 ![CAP and Cassandra](images/CAP_Cassandra.png)
 
+[This is a slight over-simplification, as Cassandra can be extensively tuned for performance/consistency.]
+
 ## Motivation
 
-Familiarization with `Cassandra` and `cqsql` with Python, using the [Datastax driver](http://datastax.github.io/python-driver/index.html).
+Familiarization with `Cassandra` and `cql` with Python, using the [Datastax driver](http://datastax.github.io/python-driver/index.html).
 
 This exercise follows on from my [Replicated Cassandra Database](http://github.com/mramshaw/Kubernetes/tree/master/Replicated%20Cassandra%20Database) exercise.
+
+We will follow the steps from that exercise in order to stand up a Cassandra database to test against.
+
+## Contents
+
+The content are as follows:
+
+* [Prerequisites](#prerequisites)
+* [Cassandra driver](#cassandra-driver)
+    * [Installation](#installation)
+    * [Verification](#verification)
+    * [Compression](#compression)
+    * [Metrics](#metrics)
+    * [Performance](#performance)
+* [Running Cassandra](#running-cassandra)
+    * [Cassandra with Docker](#cassandra-with-docker)
+* [Reference](#reference)
+* [Versions](#versions)
+* [To Do](#to-do)
+* [Credits](#credits)
 
 ## Prerequisites
 
@@ -41,9 +68,13 @@ This exercise follows on from my [Replicated Cassandra Database](http://github.c
 
 ## Cassandra driver
 
+The installation of the Cassandra driver (for Python) is slightly involved.
+
+There are also optional components (including non-Python components).
+
 #### Installation
 
-Install Cassandra driver as follows:
+Install the Cassandra driver as follows:
 
     $ pip install --user cassandra-driver
 
@@ -121,6 +152,35 @@ Installation instructions are here:
 
 [We will not be installing `libev`.]
 
+## Running Cassandra
+
+We will verify everything with `Docker` and `cqlsh` and then we will write Python code to access our Cassandra database.
+
+#### Cassandra with Docker
+
+Pull the latest tagged `Cassandra` image, as follows:
+
+    $ docker pull cassandra:3.11.3
+
+Run Cassandra as follows:
+
+    $ docker run --name python-cassandra cassandra:3.11.3
+
+[We could run this detached with the `-d` option, but then we would have to tail the log with `docker logs python-cassandra`.
+ As it is, the log will be produced in this console, allowing us to watch both consoles at the same time.]
+
+In another console, start `cqlsh` as follows:
+
+    $ docker run -it --link python-cassandra:cassandra --rm cassandra:3.11.3 cqlsh cassandra
+
+[The final `cassandra` indicates that we will be using the default Cassandra keyspace.]
+
+## Reference
+
+For the details of using Cassandra with Docker:
+
+    http://hub.docker.com/_/cassandra/
+
 ## Versions
 
 * python __2.7.12__
@@ -131,6 +191,7 @@ Installation instructions are here:
 
 ## To Do
 
+- [ ] Write Python code
 - [ ] More testing
 
 ## Credits
