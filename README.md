@@ -54,8 +54,8 @@ The content are as follows:
     * [Metrics](#metrics)
     * [Performance](#performance)
 * [Running Cassandra](#running-cassandra)
-    * [Cassandra with Docker](#cassandra-with-docker)
-    * [Cassandra with Python](#cassandra-with-python)
+    * [Run Cassandra with Docker](#run-cassandra-with-docker)
+    * [Run Cassandra with Python](#run-cassandra-with-python)
 * [Reference](#reference)
 * [Versions](#versions)
 * [To Do](#to-do)
@@ -155,7 +155,7 @@ Installation instructions are here:
 
 ## Running Cassandra
 
-We will test everything first with `Docker` and `cqlsh` and then we will write Python code to access our running Cassandra.
+We will test everything first with `Docker` and `cqlsh` and then we will use Python code to access our running Cassandra.
 
 To make things clearer, pull the latest tagged `Cassandra` image, as follows:
 
@@ -163,7 +163,7 @@ To make things clearer, pull the latest tagged `Cassandra` image, as follows:
 
 [The current version is `3.11.3` as of this writing, but may change over time.]
 
-#### Cassandra with Docker
+#### Run Cassandra with Docker
 
 [We will use Docker linking to expose Cassandra.]
 
@@ -206,7 +206,7 @@ Clean up the data volumes as follows:
 
     $ docker volume prune
 
-#### Cassandra with Python
+#### Run Cassandra with Python
 
 [We will use Docker port-mapping to expose Cassandra; port 9042 must be available on the local machine.]
 
@@ -248,6 +248,8 @@ Row(username=u'user_5', password=u'password_5')
 Row(username=u'user_0', password=u'password_0')
 $
 ```
+
+[Note that the users are listed in fairly random order.]
 
 And kill Cassandra in the original console with Ctrl-C. Once it has stopped, remove `python-cassandra`:
 
