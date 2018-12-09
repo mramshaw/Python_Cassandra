@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS users (
     password text
 );
 
+// Lets see all of the default values
+DESCRIBE users;
+
 INSERT INTO users(username, password) VALUES ('Jesse', 'secret');
 INSERT INTO users(username, password) VALUES ('Frank', 'password');
 

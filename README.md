@@ -182,12 +182,29 @@ Run `cqlsh` as follows:
 
     $ docker run -it --link python-cassandra:cassandra --rm -v $PWD/cql:/cql cassandra:3.11.3 cqlsh cassandra -f /cql/users.cql
 
-[The final `cassandra` indicates that we will be using the default Cassandra keyspace.]
-
 It should look more or less as follows:
 
 ```bash
 $ docker run -it --link python-cassandra:cassandra --rm -v $PWD/cql:/cql cassandra:3.11.3 cqlsh cassandra -f /cql/users.cql
+
+CREATE TABLE k8s_test.users (
+    username text PRIMARY KEY,
+    password text
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
 
  username | password
 ----------+----------
@@ -197,6 +214,8 @@ $ docker run -it --link python-cassandra:cassandra --rm -v $PWD/cql:/cql cassand
 (2 rows)
 $
 ```
+
+[Note that Cassandra has defaulted a lot of the table values for us.]
 
 Now we can kill Cassandra in the original console with Ctrl-C. Once it has stopped, remove `python-cassandra`:
 
