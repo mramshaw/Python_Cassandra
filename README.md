@@ -154,7 +154,7 @@ Installation instructions are here:
 
 ## Running Cassandra
 
-We will verify everything with `Docker` and `cqlsh` and then we will write Python code to access our Cassandra database.
+We will test everything first with `Docker` and `cqlsh` and then we will write Python code to access our running Cassandra.
 
 #### Cassandra with Docker
 
@@ -169,11 +169,37 @@ Run Cassandra as follows:
 [We could run this detached with the `-d` option, but then we would have to tail the log with `docker logs python-cassandra`.
  As it is, the log will be produced in this console, allowing us to watch both consoles at the same time.]
 
+In another console, set up a current directory environment variable as follows:
+
+    $ export PWD=`pwd`
+
 In another console, start `cqlsh` as follows:
 
-    $ docker run -it --link python-cassandra:cassandra --rm cassandra:3.11.3 cqlsh cassandra
+    $ docker run -it --link python-cassandra:cassandra --rm -v $PWD/cql:/cql cassandra:3.11.3 cqlsh cassandra -f /cql/users.cql
 
 [The final `cassandra` indicates that we will be using the default Cassandra keyspace.]
+
+It should look more or less as follows:
+
+```bash
+$ docker run -it --link python-cassandra:cassandra --rm -v $PWD/cql:/cql cassandra:3.11.3 cqlsh cassandra -f /cql/users.cql
+
+ username | password
+----------+----------
+    Jesse |   secret
+    Frank | password
+
+(2 rows)
+$
+```
+
+Now we can kill Cassandra in the original console with Ctrl-C. Once it has stopped, remove `python-cassandra`:
+
+    $ docker rm python-cassandra
+
+Clean up the data volumes as follows:
+
+    $ docker volume prune
 
 ## Reference
 
@@ -183,10 +209,11 @@ For the details of using Cassandra with Docker:
 
 ## Versions
 
-* python __2.7.12__
-* pip __18.1__
+* Cassandra __3.11.3__
 * cassandra-driver __3.16.0__
 * lz4 __2.1.2__
+* pip __18.1__
+* python __2.7.12__
 * scales __1.0.9__
 
 ## To Do
@@ -210,3 +237,5 @@ and
 Also:
 
     http://datastax.github.io/python-driver/installation.html
+
+[For the intricacies of installing the Python driver.]
