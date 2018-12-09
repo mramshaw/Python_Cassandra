@@ -55,6 +55,7 @@ The content are as follows:
     * [Performance](#performance)
 * [Running Cassandra](#running-cassandra)
     * [Cassandra with Docker](#cassandra-with-docker)
+    * [Cassandra with Python](#cassandra-with-python)
 * [Reference](#reference)
 * [Versions](#versions)
 * [To Do](#to-do)
@@ -156,11 +157,15 @@ Installation instructions are here:
 
 We will test everything first with `Docker` and `cqlsh` and then we will write Python code to access our running Cassandra.
 
-#### Cassandra with Docker
-
-Pull the latest tagged `Cassandra` image, as follows:
+To make things clearer, pull the latest tagged `Cassandra` image, as follows:
 
     $ docker pull cassandra:3.11.3
+
+[The current version is `3.11.3` as of this writing, but may change over time.]
+
+#### Cassandra with Docker
+
+[We will use Docker linking to expose Cassandra.]
 
 Run Cassandra as follows:
 
@@ -173,7 +178,7 @@ In another console, set up a current directory environment variable as follows:
 
     $ export PWD=`pwd`
 
-In another console, start `cqlsh` as follows:
+Run `cqlsh` as follows:
 
     $ docker run -it --link python-cassandra:cassandra --rm -v $PWD/cql:/cql cassandra:3.11.3 cqlsh cassandra -f /cql/users.cql
 
@@ -201,6 +206,57 @@ Clean up the data volumes as follows:
 
     $ docker volume prune
 
+#### Cassandra with Python
+
+[We will use Docker port-mapping to expose Cassandra; port 9042 must be available on the local machine.]
+
+Run Cassandra as follows:
+
+    $ docker run --name python-cassandra -p 9042:9042 cassandra:3.11.3
+
+In another console, set up a current directory environment variable as follows:
+
+    $ export PWD=`pwd`
+
+Run `cqlsh` to set up our keyspace and table as follows:
+
+    $ docker run -it --link python-cassandra:cassandra --rm -v $PWD/cql:/cql cassandra:3.11.3 cqlsh cassandra -f /cql/users.cql
+
+[This will leave our table empty.]
+
+Run command <kbd>python add_users.py</kbd> to add some users. This should look like:
+
+```bash
+$ python add_users.py
+10 users added
+$
+```
+
+Run command <kbd>python list_users.py</kbd> to list some users. This should look like:
+
+```bash
+$ python list_users.py
+Row(username=u'user_7', password=u'password_7')
+Row(username=u'user_6', password=u'password_6')
+Row(username=u'user_1', password=u'password_1')
+Row(username=u'user_2', password=u'password_2')
+Row(username=u'user_4', password=u'password_4')
+Row(username=u'user_9', password=u'password_9')
+Row(username=u'user_3', password=u'password_3')
+Row(username=u'user_8', password=u'password_8')
+Row(username=u'user_5', password=u'password_5')
+Row(username=u'user_0', password=u'password_0')
+$
+```
+
+And kill Cassandra in the original console with Ctrl-C. Once it has stopped, remove `python-cassandra`:
+
+    $ docker rm python-cassandra
+
+Finally, clean up the data volumes as follows:
+
+    $ docker volume prune
+
 ## Reference
 
 For the details of using Cassandra with Docker:
@@ -218,7 +274,7 @@ For the details of using Cassandra with Docker:
 
 ## To Do
 
-- [ ] Write Python code
+- [x] Write Python code
 - [ ] More testing
 
 ## Credits
