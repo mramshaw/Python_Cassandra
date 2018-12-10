@@ -84,6 +84,8 @@ Or else:
 
     $ pip install --user -r requirements.txt
 
+[This will also install some optional components, as discussed below.]
+
 #### Verification
 
 Verify installation as follows:
@@ -130,7 +132,7 @@ Optionally, install `scales` (gets installed with `cassandra-driver` if using `r
 
     $ pip install --user scales
 
-The driver has built-in support for capturing Cluster.metrics about the queries run. The scales library is required to support this.
+The driver has built-in support for capturing `Cluster.metrics` about the queries run. The scales library is required to support this.
 
 #### Performance
 

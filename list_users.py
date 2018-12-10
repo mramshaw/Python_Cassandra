@@ -12,3 +12,5 @@ user_list_stmt = session.prepare("SELECT * FROM users LIMIT ?")
 users = session.execute(user_list_stmt, [RECORDS_TO_LIST])
 for u in users:
     print u
+
+cluster.shutdown()

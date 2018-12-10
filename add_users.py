@@ -14,3 +14,5 @@ for i in range(RECORDS_TO_ADD):
     session.execute(user_insert_stmt, ["user_" + s, "password_" + s])
 
 print RECORDS_TO_ADD, "users added"
+
+cluster.shutdown()
