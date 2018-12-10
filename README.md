@@ -295,6 +295,16 @@ For the details of using Cassandra with Docker:
 
     http://hub.docker.com/_/cassandra/
 
+Cassandra connection, Session and Cluster parameters (including defaults):
+
+    http://datastax.github.io/python-driver/api/cassandra/cluster.html
+
+Materialized View Performance Penalty:
+
+    http://www.datastax.com/dev/blog/materialized-view-performance-in-cassandra-3-x
+
+[Materialized views seem to be a way of imposing a finer index on stored data. There is a performance penalty.]
+
 ## Versions
 
 * Cassandra __3.11.3__
@@ -307,6 +317,7 @@ For the details of using Cassandra with Docker:
 ## To Do
 
 - [x] Write Python code
+- [ ] Investigate Cassandra Metrics with Python
 - [ ] More testing
 
 ## Credits
@@ -327,9 +338,3 @@ Also:
     http://datastax.github.io/python-driver/installation.html
 
 [For the intricacies of installing the Python driver.]
-
-And:
-
-    https://www.datastax.com/dev/blog/materialized-view-performance-in-cassandra-3-x
-
-[Materialized views seem to be a way of imposing a finer index on stored data. There is a performance penalty.]
