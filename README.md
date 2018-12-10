@@ -22,7 +22,8 @@ How this data gets written to disk and propagated then depends on the ___replica
 
 As __SS Tables__ are immutable, deletes are handled via a logical delete indicator, which
 is referred to as a ___Tombstone___ in Cassandra. Compaction is used to remove logically
-deleted records.
+deleted records [the uncompacted original SS Table continues to exist until the JVM runs
+ GC (garbage collection)].
 
 By design, there is no single point of failure.
 
@@ -215,7 +216,8 @@ CREATE TABLE k8s_test.users (
 $
 ```
 
-[Note that Cassandra has defaulted a lot of the table values for us.]
+[Note that Cassandra has defaulted a lot of the table values for us. Here the default Compaction Strategy is
+ __Size-Tiered__, which seems appropriate for the current use case - where the records will be written once.]
 
 Now we can kill Cassandra in the original console with Ctrl-C. Once it has stopped, remove `python-cassandra`:
 
@@ -268,7 +270,8 @@ Row(username=u'user_0', password=u'password_0')
 $
 ```
 
-[Note that the users are listed in fairly random order.]
+[Note that the users are listed in fairly random order. While the CQL Select statment does have an
+ `Order By` clause, it does not have a run-time component and merely affects how indexes are read.]
 
 And kill Cassandra in the original console with Ctrl-C. Once it has stopped, remove `python-cassandra`:
 
@@ -316,3 +319,9 @@ Also:
     http://datastax.github.io/python-driver/installation.html
 
 [For the intricacies of installing the Python driver.]
+
+And:
+
+    https://www.datastax.com/dev/blog/materialized-view-performance-in-cassandra-3-x
+
+[Materialized views seem to be a way of imposing a finer index on stored data. There is a performance penalty.]
