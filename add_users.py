@@ -15,4 +15,5 @@ for i in range(RECORDS_TO_ADD):
 
 print RECORDS_TO_ADD, "users added"
 
+session.shutdown()
 cluster.shutdown()

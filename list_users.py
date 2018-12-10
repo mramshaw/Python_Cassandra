@@ -13,4 +13,5 @@ users = session.execute(user_list_stmt, [RECORDS_TO_LIST])
 for u in users:
     print u
 
+session.shutdown()
 cluster.shutdown()

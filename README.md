@@ -41,8 +41,6 @@ Familiarization with `Cassandra` and `cql` with Python, using the [Datastax driv
 
 This exercise follows on from my [Replicated Cassandra Database](http://github.com/mramshaw/Kubernetes/tree/master/Replicated%20Cassandra%20Database) exercise.
 
-We will follow the steps from that exercise in order to stand up a Cassandra database to test against.
-
 ## Contents
 
 The content are as follows:
@@ -220,6 +218,14 @@ $
 
 [Note that Cassandra has defaulted a lot of the table values for us. Here the default Compaction Strategy is
  __Size-Tiered__, which seems appropriate for the current use case - where the records will be written once.]
+
+In the event it looks as follows, Cassandra probably has not fully started (and it may be necessary to retry):
+
+```bash
+$ docker run -it --link python-cassandra:cassandra --rm -v $PWD/cql:/cql cassandra:3.11.3 cqlsh cassandra -f /cql/users.cql
+Connection error: ('Unable to connect to any servers', {'172.17.0.2': error(111, "Tried connecting to [('172.17.0.2', 9042)]. Last error: Connection refused")})
+$
+```
 
 Now we can kill Cassandra in the original console with Ctrl-C. Once it has stopped, remove `python-cassandra`:
 
