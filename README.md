@@ -257,7 +257,18 @@ Run command <kbd>python add_users.py</kbd> to add some users. This should look l
 
 ```bash
 $ python add_users.py
-10 users added
+2018-12-16 21:19:34,667 [INFO] cassandra.policies: Using datacenter 'datacenter1' for DCAwareRoundRobinPolicy (via host '127.0.0.1'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2018-12-16 21:19:34,721 [INFO] root: Created user: user_0
+2018-12-16 21:19:34,723 [INFO] root: Created user: user_1
+2018-12-16 21:19:34,725 [INFO] root: Created user: user_2
+2018-12-16 21:19:34,727 [INFO] root: Created user: user_3
+2018-12-16 21:19:34,728 [INFO] root: Created user: user_4
+2018-12-16 21:19:34,730 [INFO] root: Created user: user_5
+2018-12-16 21:19:34,731 [INFO] root: Created user: user_6
+2018-12-16 21:19:34,732 [INFO] root: Created user: user_7
+2018-12-16 21:19:34,733 [INFO] root: Created user: user_8
+2018-12-16 21:19:34,734 [INFO] root: Created user: user_9
+2018-12-16 21:19:34,734 [INFO] root: 10 users added
 $
 ```
 
@@ -265,6 +276,7 @@ Run command <kbd>python list_users.py</kbd> to list some users. This should look
 
 ```bash
 $ python list_users.py
+2018-12-16 21:26:35,618 [INFO] cassandra.policies: Using datacenter 'datacenter1' for DCAwareRoundRobinPolicy (via host '127.0.0.1'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
 Row(username=u'user_7', password=u'password_7')
 Row(username=u'user_6', password=u'password_6')
 Row(username=u'user_1', password=u'password_1')
@@ -275,6 +287,7 @@ Row(username=u'user_3', password=u'password_3')
 Row(username=u'user_8', password=u'password_8')
 Row(username=u'user_5', password=u'password_5')
 Row(username=u'user_0', password=u'password_0')
+2018-12-16 21:26:35,654 [INFO] root: 10 users listed
 $
 ```
 
@@ -317,6 +330,7 @@ Materialized View Performance Penalty:
 ## To Do
 
 - [x] Write Python code
+- [x] Replace print statements with logging
 - [ ] Investigate Cassandra Metrics with Python
 - [ ] More testing
 
